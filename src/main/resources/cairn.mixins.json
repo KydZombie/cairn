@@ -1,0 +1,25 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.kydzombie.cairn.impl.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "BlockEntityMixin",
+    "CraftingRecipeManagerMixin",
+    "ItemMixin",
+    "ItemStackMixin",
+    "PlayerEntityMixin",
+    "ScreenHandlerMixin"
+  ],
+  "server": [
+    "ServerBlockEntityMixin",
+    "ServerScreenHandlerMixin"
+  ],
+  "client": [
+    "ClientWorldMixin",
+    "ClientScreenHandlerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

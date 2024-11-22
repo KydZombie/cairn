@@ -1,0 +1,4 @@
+tile.@.simple_storage_block.name=Simple Storage Block
+tile.@.update_packet_tester_block.name=Update Packet Tester Block
+
+item.@.glass_sword.name=Glass Sword

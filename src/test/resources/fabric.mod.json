@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "id": "cairn",
+  "id": "cairntest",
   "version": "${version}",
 
-  "name": "Cairn",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Cairn Test Mod",
+  "description": "Test mod for Cairn",
   "authors": [
     "KydZombie"
   ],
@@ -18,18 +18,19 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.github.kydzombie.cairn.Cairn"
+      "io.github.kydzombie.cairntest.CairnTest"
     ],
     "stationapi:event_bus": [
-      "io.github.kydzombie.cairn.Cairn"
+      "io.github.kydzombie.cairntest.CairnTest"
     ],
     "stationapi:event_bus_client": [
+      "io.github.kydzombie.cairntest.CairnTestClient"
     ],
     "stationapi:event_bus_server": [
     ]
   },
   "mixins": [
-    "cairn.mixins.json"
+    "cairntest.mixins.json"
   ],
 
   "depends": {
