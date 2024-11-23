@@ -1,15 +1,17 @@
 package io.github.kydzombie.cairntest.gui;
 
 import io.github.kydzombie.cairn.api.gui.SyncField;
-import io.github.kydzombie.cairn.api.gui.SyncableScreenHandler;
+import io.github.kydzombie.cairn.api.gui.Syncable;
+import io.github.kydzombie.cairn.api.gui.SyncedBlockEntity;
 import io.github.kydzombie.cairntest.block.entity.SimpleStorageBlockEntity;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 
-public class SimpleStorageScreenHandler extends ScreenHandler implements SyncableScreenHandler {
+@Syncable
+public class SimpleStorageScreenHandler extends ScreenHandler {
+    @SyncedBlockEntity
     private final SimpleStorageBlockEntity blockEntity;
 
     @SyncField("progress")
@@ -38,10 +40,5 @@ public class SimpleStorageScreenHandler extends ScreenHandler implements Syncabl
     @Override
     public boolean canUse(PlayerEntity player) {
         return blockEntity.canPlayerUse(player);
-    }
-
-    @Override
-    public BlockEntity getSyncedBlockEntity() {
-        return blockEntity;
     }
 }

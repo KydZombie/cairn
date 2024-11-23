@@ -2,8 +2,9 @@ package io.github.kydzombie.cairn.impl.mixin;
 
 import io.github.kydzombie.cairn.api.gui.SyncField;
 import io.github.kydzombie.cairn.api.gui.SyncGetter;
-import io.github.kydzombie.cairn.api.gui.SyncableScreenHandler;
+import io.github.kydzombie.cairn.api.gui.Syncable;
 import io.github.kydzombie.cairn.impl.CairnImplConstants;
+import io.github.kydzombie.cairn.impl.util.SyncUtil;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
@@ -25,11 +26,9 @@ public class ServerScreenHandlerMixin {
     }
 
     private void extracted(ScreenHandlerListener listener) {
-        if (!(this instanceof SyncableScreenHandler)) {
-            return;
-        }
-        BlockEntity syncEntity = ((SyncableScreenHandler) this).getSyncedBlockEntity();
+        if (!this.getClass().isAnnotationPresent(Syncable.class)) return;
         ScreenHandler handler = (ScreenHandler) (Object) this;
+        BlockEntity syncEntity = SyncUtil.getSyncedBlockEntity(handler);
 
         if (syncEntity == null) {
             throw new RuntimeException("SyncableScreenHandler must return a non-null BlockEntity from getSyncedBlockEntity");

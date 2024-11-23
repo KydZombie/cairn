@@ -1,11 +1,9 @@
 package io.github.kydzombie.cairn.impl.mixin;
 
 import io.github.kydzombie.cairn.Cairn;
-import io.github.kydzombie.cairn.api.gui.SyncField;
-import io.github.kydzombie.cairn.api.gui.SyncGetter;
-import io.github.kydzombie.cairn.api.gui.SyncSetter;
-import io.github.kydzombie.cairn.api.gui.SyncableScreenHandler;
+import io.github.kydzombie.cairn.api.gui.*;
 import io.github.kydzombie.cairn.impl.CairnImplConstants;
+import io.github.kydzombie.cairn.impl.util.SyncUtil;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.screen.ScreenHandler;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,9 +20,9 @@ import java.util.HashMap;
 public class ClientScreenHandlerMixin {
     @Inject(method = "setProperty(II)V", at = @At("HEAD"))
     private void cairn_setSyncedData(int id, int value, CallbackInfo ci) {
-        if (!(this instanceof SyncableScreenHandler)) return;
-        BlockEntity syncEntity = ((SyncableScreenHandler) this).getSyncedBlockEntity();
+        if (!this.getClass().isAnnotationPresent(Syncable.class)) return;
         ScreenHandler handler = (ScreenHandler) (Object) this;
+        BlockEntity syncEntity = SyncUtil.getSyncedBlockEntity(handler);
 
         ArrayList<String> handlerProperties = new ArrayList<>();
 
