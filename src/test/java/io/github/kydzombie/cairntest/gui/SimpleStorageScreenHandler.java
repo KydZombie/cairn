@@ -18,7 +18,7 @@ public class SimpleStorageScreenHandler extends ScreenHandler {
     public int progress;
 
     @SyncField("privateProgress")
-    public int privateProgress;
+    private int privateProgress;
 
     public SimpleStorageScreenHandler(PlayerInventory playerInventory, SimpleStorageBlockEntity blockEntity) {
         this.blockEntity = blockEntity;

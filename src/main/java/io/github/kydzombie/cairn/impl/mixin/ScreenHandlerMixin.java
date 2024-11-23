@@ -62,7 +62,7 @@ public class ScreenHandlerMixin {
         TreeMap<String, Method> setterMethods = new TreeMap<>();
 
         while (clazz != null) {
-            for (Field field : clazz.getFields()) {
+            for (Field field : clazz.getDeclaredFields()) {
                 if (!field.isAnnotationPresent(SyncField.class)) continue;
                 if (field.getType() != int.class && field.getType() != Integer.class) {
                     throw new RuntimeException("Field annotated with @SyncField must be an int");
@@ -80,7 +80,7 @@ public class ScreenHandlerMixin {
                 fields.put(field.getAnnotation(SyncField.class).value(), field);
             }
 
-            for (Method method : clazz.getMethods()) {
+            for (Method method : clazz.getDeclaredMethods()) {
                 if (method.isAnnotationPresent(SyncGetter.class)) {
                     if (method.getReturnType() != int.class && method.getReturnType() != Integer.class) {
                         throw new RuntimeException("Method annotated with @SyncGetter must return an int");
