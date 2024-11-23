@@ -12,24 +12,22 @@ import org.jetbrains.annotations.NotNull;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public final class BlockEntityUpdatePacket<CustomData extends Record> extends Packet implements IdentifiablePacket {
+    public static Queue<@NotNull BlockEntityUpdatePacket<?>> pending = new LinkedList<>();
     public int x;
     public int y;
     public int z;
     public byte[] rawData;
     private Record data;
-
     private int dataSize;
 
-    public static Queue<@NotNull BlockEntityUpdatePacket<?>> pending = new LinkedList<>();
-
-    public BlockEntityUpdatePacket() {}
+    public BlockEntityUpdatePacket() {
+    }
 
     public BlockEntityUpdatePacket(int x, int y, int z, CustomData data) {
         this.x = x;

@@ -7,7 +7,7 @@ import net.minecraft.nbt.NbtList;
 
 public class ItemStorage {
     ItemStack[] inventory;
-    
+
     public ItemStorage(int size) {
         inventory = new ItemStack[size];
     }

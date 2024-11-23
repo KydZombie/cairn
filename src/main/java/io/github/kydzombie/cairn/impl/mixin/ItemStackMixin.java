@@ -19,15 +19,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ItemStackMixin {
     @Shadow
     public int count;
+    @Shadow
+    public int itemId;
+    @Shadow
+    private int damage;
 
     @Shadow
     public abstract Item getItem();
 
-    @Shadow public int itemId;
-
-    @Shadow private int damage;
-
-    @Shadow public abstract void readNbt(NbtCompound nbt);
+    @Shadow
+    public abstract void readNbt(NbtCompound nbt);
 
     @Unique
     private void cairn_transformStack(ItemBreakHandler item, ItemStack newStack) {
@@ -50,7 +51,7 @@ public abstract class ItemStackMixin {
             ItemBreakResult result = item.onItemBroken(ItemStack.class.cast(this), entity);
             cairn_transformStack(item, result.stack());
             if (result.broken()) {
-                ((PlayerEntity)entity).increaseStat(Stats.BROKEN[itemId], 1);
+                ((PlayerEntity) entity).increaseStat(Stats.BROKEN[itemId], 1);
             }
             ci.cancel();
         }

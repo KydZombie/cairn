@@ -12,7 +12,6 @@ import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.storage.WorldStorage;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -45,7 +44,7 @@ public abstract class ClientWorldMixin extends World {
                             for (Method method : clazz.getDeclaredMethods()) {
                                 if (method.isAnnotationPresent(PacketDeserializer.class)) {
                                     method.setAccessible(true);
-                                    Record data = (Record) method.invoke(null, (Object) packet.rawData);
+                                    Record data = (Record) method.invoke(null, packet.rawData);
 
                                     try {
                                         //noinspection unchecked
@@ -68,10 +67,11 @@ public abstract class ClientWorldMixin extends World {
                             }
                         }
                     }
-            } else {
-                Cairn.LOGGER.error("Block entity at {}, {}, {} does not implement " +
-                        "UpdatePacketReceiver, but was sent a BlockEntityUpdatePacket.", packet.x, packet.y, packet.z);
-            }
-        } catch (Exception ignored) {}
+                } else {
+                    Cairn.LOGGER.error("Block entity at {}, {}, {} does not implement " +
+                            "UpdatePacketReceiver, but was sent a BlockEntityUpdatePacket.", packet.x, packet.y, packet.z);
+                }
+        } catch (Exception ignored) {
+        }
     }
 }

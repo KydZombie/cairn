@@ -12,9 +12,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BlockEntity.class)
 public class ServerBlockEntityMixin {
-    @Shadow public int x;
-    @Shadow public int y;
-    @Shadow public int z;
+    @Shadow
+    public int x;
+    @Shadow
+    public int y;
+    @Shadow
+    public int z;
 
     @Inject(method = "createUpdatePacket", at = @At("HEAD"), cancellable = true)
     private void cairn_customUpdatePacket(CallbackInfoReturnable<Packet> cir) {

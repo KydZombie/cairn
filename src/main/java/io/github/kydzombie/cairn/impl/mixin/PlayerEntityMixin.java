@@ -18,7 +18,8 @@ public abstract class PlayerEntityMixin {
     @Shadow
     public ScreenHandler currentScreenHandler;
 
-    @Shadow public abstract ItemStack getHand();
+    @Shadow
+    public abstract ItemStack getHand();
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void cairn_tickScreenHandler(CallbackInfo info) {

@@ -9,6 +9,8 @@ import net.minecraft.item.ItemStack;
 import java.util.Random;
 
 public interface HasItemStorage extends Inventory {
+    Random RANDOM = new Random();
+
     ItemStorage getItemStorage();
 
     @Override
@@ -37,7 +39,8 @@ public interface HasItemStorage extends Inventory {
     }
 
     @Override
-    default void markDirty() {}
+    default void markDirty() {
+    }
 
     @Override
     default boolean canPlayerUse(PlayerEntity player) {
@@ -48,8 +51,6 @@ public interface HasItemStorage extends Inventory {
             return !(player.getSquaredDistance((double) blockEntity.x + 0.5, (double) blockEntity.y + 0.5, (double) blockEntity.z + 0.5) > 64.0);
         }
     }
-
-    Random RANDOM = new Random();
 
     default void dropInventory() {
         BlockEntity blockEntity = (BlockEntity) this;
@@ -69,12 +70,12 @@ public interface HasItemStorage extends Inventory {
 
                     stack.count -= droppedCount;
                     ItemEntity droppedEntity = new ItemEntity(
-                            blockEntity.world, (float)blockEntity.x + xOffset, (float)blockEntity.y + yOffset, (float)blockEntity.z + zOffset, new ItemStack(stack.itemId, droppedCount, stack.getDamage())
+                            blockEntity.world, (float) blockEntity.x + xOffset, (float) blockEntity.y + yOffset, (float) blockEntity.z + zOffset, new ItemStack(stack.itemId, droppedCount, stack.getDamage())
                     );
                     float var13 = 0.05F;
-                    droppedEntity.velocityX = (float)RANDOM.nextGaussian() * var13;
-                    droppedEntity.velocityY = (float)RANDOM.nextGaussian() * var13 + 0.2F;
-                    droppedEntity.velocityZ = (float)RANDOM.nextGaussian() * var13;
+                    droppedEntity.velocityX = (float) RANDOM.nextGaussian() * var13;
+                    droppedEntity.velocityY = (float) RANDOM.nextGaussian() * var13 + 0.2F;
+                    droppedEntity.velocityZ = (float) RANDOM.nextGaussian() * var13;
                     blockEntity.world.spawnEntity(droppedEntity);
                 }
             }

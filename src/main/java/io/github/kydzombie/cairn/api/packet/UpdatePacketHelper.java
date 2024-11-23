@@ -2,7 +2,6 @@ package io.github.kydzombie.cairn.api.packet;
 
 import com.google.common.primitives.Primitives;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.RecordComponent;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -13,20 +12,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public class UpdatePacketHelper {
-    private record Serializer<T>(BiConsumer<ByteBuffer, T> serializeFunc, Function<ByteBuffer, T> deserializeFunc, Function<T, Integer> sizeFunc) {
-        public void serialize(ByteBuffer buffer, T value) {
-            serializeFunc.accept(buffer, value);
-        }
-
-        public T deserialize(ByteBuffer buffer) {
-            return deserializeFunc.apply(buffer);
-        }
-
-        public int getSize(T value) {
-            return sizeFunc.apply(value);
-        }
-    }
-
     private static final Map<Class<?>, Serializer<?>> SERIALIZERS = new HashMap<>();
 
     static {
@@ -133,5 +118,20 @@ public class UpdatePacketHelper {
             throw new RuntimeException("Couldn't deserialize record.", e);
         }
 
+    }
+
+    private record Serializer<T>(BiConsumer<ByteBuffer, T> serializeFunc, Function<ByteBuffer, T> deserializeFunc,
+                                 Function<T, Integer> sizeFunc) {
+        public void serialize(ByteBuffer buffer, T value) {
+            serializeFunc.accept(buffer, value);
+        }
+
+        public T deserialize(ByteBuffer buffer) {
+            return deserializeFunc.apply(buffer);
+        }
+
+        public int getSize(T value) {
+            return sizeFunc.apply(value);
+        }
     }
 }

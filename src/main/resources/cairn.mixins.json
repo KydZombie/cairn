@@ -12,12 +12,10 @@
     "ScreenHandlerMixin"
   ],
   "server": [
-    "ServerBlockEntityMixin",
-    "ServerScreenHandlerMixin"
+    "ServerBlockEntityMixin"
   ],
   "client": [
-    "ClientWorldMixin",
-    "ClientScreenHandlerMixin"
+    "ClientWorldMixin"
   ],
   "injectors": {
     "defaultRequire": 1
