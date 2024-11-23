@@ -26,11 +26,12 @@ import java.util.*;
 
 @Mixin(ScreenHandler.class)
 public class ScreenHandlerMixin {
-    @Shadow
-    protected List listeners;
-
     @Unique
     private static final Map<Class<?>, PropertyInfo> cairn_PROPERTY_INFO_MAP = new HashMap<>();
+
+    @SuppressWarnings("rawtypes")
+    @Shadow
+    protected List listeners;
 
     @Unique
     private static @Nullable BlockEntity cairn_getSyncedBlockEntity(ScreenHandler handler) {
