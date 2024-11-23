@@ -8,8 +8,4 @@ import net.minecraft.item.ItemStack;
  */
 public record ItemBreakResult(ItemStack stack, boolean broken) {
     public static final ItemBreakResult BROKEN = new ItemBreakResult(null, true);
-    public static ItemBreakResult decrement(ItemStack stack) {
-        stack.split(1);
-        return stack.count <= 0 ? BROKEN : new ItemBreakResult(stack, false);
-    }
 }
