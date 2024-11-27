@@ -78,4 +78,22 @@ public class ItemStorage {
 
         nbt.put("items", inventoryList);
     }
+
+    /**
+     * Deep copies size items starting at startIndex,
+     * returning a new ItemStorage containing the copied items.
+     */
+    public ItemStorage copy(int startIndex, int size) {
+        if (startIndex + size > inventory.length) {
+            throw new IllegalArgumentException("Attempted to copy more items than are in the ItemStorage");
+        }
+        ItemStorage copy = new ItemStorage(size);
+        for (int i = 0; i < size; i++) {
+            ItemStack stack = inventory[startIndex + i];
+            if (stack != null) {
+                copy.inventory[i] = stack.copy();
+            }
+        }
+        return copy;
+    }
 }

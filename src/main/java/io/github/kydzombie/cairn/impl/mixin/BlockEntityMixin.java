@@ -31,36 +31,44 @@ public class BlockEntityMixin {
     @Inject(method = "readNbt", at = @At("RETURN"))
     private void cairn_injectReadNbt(NbtCompound nbt, CallbackInfo ci) {
         if (!(this instanceof HasItemStorage)) return;
-        for (Field field : getClass().getDeclaredFields()) {
-            if (field.isAnnotationPresent(AutoNbt.class)) {
-                try {
-                    field.setAccessible(true);
-                    Object value = field.get(this);
-                    if (value instanceof ItemStorage) {
-                        ((ItemStorage) value).readNbt(nbt);
+        Class<?> clazz = getClass();
+        while (clazz != null) {
+            for (Field field : clazz.getDeclaredFields()) {
+                if (field.isAnnotationPresent(AutoNbt.class)) {
+                    try {
+                        field.setAccessible(true);
+                        Object value = field.get(this);
+                        if (value instanceof ItemStorage) {
+                            ((ItemStorage) value).readNbt(nbt);
+                        }
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
                     }
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
                 }
             }
+            clazz = clazz.getSuperclass();
         }
     }
 
     @Inject(method = "writeNbt", at = @At("RETURN"))
     private void cairn_injectWriteNbt(NbtCompound nbt, CallbackInfo ci) {
         if (!(this instanceof HasItemStorage)) return;
-        for (Field field : getClass().getDeclaredFields()) {
-            if (field.isAnnotationPresent(AutoNbt.class)) {
-                try {
-                    field.setAccessible(true);
-                    Object value = field.get(this);
-                    if (value instanceof ItemStorage) {
-                        ((ItemStorage) value).writeNbt(nbt);
+        Class<?> clazz = getClass();
+        while (clazz != null) {
+            for (Field field : clazz.getDeclaredFields()) {
+                if (field.isAnnotationPresent(AutoNbt.class)) {
+                    try {
+                        field.setAccessible(true);
+                        Object value = field.get(this);
+                        if (value instanceof ItemStorage) {
+                            ((ItemStorage) value).writeNbt(nbt);
+                        }
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
                     }
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
                 }
             }
+            clazz = clazz.getSuperclass();
         }
     }
 
