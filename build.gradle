@@ -158,14 +158,3 @@ publishing {
 		// retrieving dependencies.
 	}
 }
-
-sourceSets {
-	main {
-		java {
-			srcDir("src/main/java")
-		}
-		resources {
-			srcDir("src/generated/resources")
-		}
-	}
-}
