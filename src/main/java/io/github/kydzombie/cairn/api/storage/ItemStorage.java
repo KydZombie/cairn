@@ -16,6 +16,10 @@ public class ItemStorage {
         return inventory.length;
     }
 
+    public ItemStack[] getStacks() {
+        return inventory;
+    }
+
     public ItemStack getStack(int slot) {
         return inventory[slot];
     }
