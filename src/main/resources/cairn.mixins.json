@@ -13,7 +13,6 @@
     "ScreenHandlerMixin"
   ],
   "server": [
-    "ServerBlockEntityMixin"
   ],
   "client": [
     "ClientWorldMixin"
