@@ -96,4 +96,21 @@ public class ItemStorage {
         }
         return copy;
     }
+
+
+    /**
+     * Deep copies all items starting at startIndex,
+     * returning a new ItemStorage containing the copied items.
+     */
+    public ItemStorage copy(int startIndex) {
+        return copy(startIndex, inventory.length - startIndex);
+    }
+
+    /**
+     * Deep copies all items in the ItemStorage,
+     * returning a new ItemStorage containing the copied items.
+     */
+    public ItemStorage copy() {
+        return copy(0, inventory.length);
+    }
 }
