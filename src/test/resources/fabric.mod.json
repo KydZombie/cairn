@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "cairntest",
-  "version": "${version}",
+  "version": "0",
 
   "name": "Cairn Test Mod",
   "description": "Test mod for Cairn",
@@ -13,7 +13,7 @@
   },
 
   "license": "MIT",
-  "icon": "assets/examplemod/icon.png",
+  "icon": "assets/cairntest/icon.png",
 
   "environment": "*",
   "entrypoints": {
