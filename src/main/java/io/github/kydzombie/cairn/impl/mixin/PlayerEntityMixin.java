@@ -38,7 +38,7 @@ public abstract class PlayerEntityMixin {
     private void cairn_injectKillMethod(Entity target, CallbackInfo ci) {
         if (getHand() != null && getHand().getItem() instanceof ItemKillHandler handler) {
             if (target instanceof LivingEntity entity) {
-                if (!entity.isAlive()) {
+                if (!entity.isAlive() && entity.deathTime == 0) {
                     handler.onKill(getHand(), entity, (PlayerEntity) (Object) this);
                 }
             }
