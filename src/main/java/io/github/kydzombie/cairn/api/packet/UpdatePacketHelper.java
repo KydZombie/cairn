@@ -22,6 +22,7 @@ public class UpdatePacketHelper {
     private static final Map<Class<?>, Serializer<?>> SERIALIZERS = new HashMap<>();
 
     static {
+        registerSerializer(Boolean.class, (buffer, value) -> buffer.put(value ? (byte) 1 : (byte) 0), (buffer) -> buffer.get() > 0, (value) -> 1);
         registerSerializer(Byte.class, ByteBuffer::put, ByteBuffer::get, (value) -> 1);
         registerSerializer(Short.class, ByteBuffer::putShort, ByteBuffer::getShort, (value) -> 2);
         registerSerializer(Integer.class, ByteBuffer::putInt, ByteBuffer::getInt, (value) -> 4);
