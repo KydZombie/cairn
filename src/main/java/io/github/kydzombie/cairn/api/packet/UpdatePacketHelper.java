@@ -1,7 +1,6 @@
 package io.github.kydzombie.cairn.api.packet;
 
 import com.google.common.primitives.Primitives;
-import com.mojang.datafixers.DataFixerUpper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 
@@ -86,7 +85,7 @@ public class UpdatePacketHelper {
     }
 
     public static <T> void registerSerializer(Class<T> type, BiConsumer<ByteBuffer, T> serializer, Function<ByteBuffer, T> deserializer, Function<T, Integer> sizeFunc) {
-        SERIALIZERS.put(type, new Serializer<T>(serializer, deserializer, sizeFunc));
+        SERIALIZERS.put(type, new Serializer<>(serializer, deserializer, sizeFunc));
     }
 
     public static void autoSerialize(ByteBuffer buffer, Class<?> type, Object value) throws RuntimeException {
@@ -167,7 +166,8 @@ public class UpdatePacketHelper {
 
     }
 
-    private record Serializer<T>(BiConsumer<ByteBuffer, T> serializeFunc, Function<ByteBuffer, T> deserializeFunc,
+    private record Serializer<T>(BiConsumer<ByteBuffer, T> serializeFunc,
+                                 Function<ByteBuffer, T> deserializeFunc,
                                  Function<T, Integer> sizeFunc) {
         public void serialize(ByteBuffer buffer, T value) {
             serializeFunc.accept(buffer, value);
