@@ -9,6 +9,9 @@ sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
+if (project.properties["version_override"]) {
+	version += "+${project.properties["version_override"]}"
+}
 group = project.maven_group
 
 loom {
