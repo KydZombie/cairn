@@ -13,6 +13,8 @@ group = project.maven_group
 
 loom {
 	// reference accessor file here if needed, see fabric wiki, along with in fabric.mod.json
+	accessWidenerPath = file("src/main/resources/cairn.accessWidener")
+
 	runs {
 		register("testModClient") {
 			source("test")

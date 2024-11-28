@@ -80,7 +80,7 @@ public final class BlockEntityUpdatePacket<CustomData extends Record> extends Pa
                     stream.write(bytes);
                     return;
                 } catch (Exception e) {
-                    Cairn.LOGGER.error("Auto deserializing failed on {}. " +
+                    Cairn.LOGGER.error("Auto serializing failed on {}. " +
                             "Consider implementing a @PacketSerializer method", data.getClass().getName());
                 }
             } catch (InvocationTargetException | IllegalAccessException e) {

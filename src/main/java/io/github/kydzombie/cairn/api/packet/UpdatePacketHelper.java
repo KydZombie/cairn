@@ -1,7 +1,14 @@
 package io.github.kydzombie.cairn.api.packet;
 
 import com.google.common.primitives.Primitives;
+import com.mojang.datafixers.DataFixerUpper;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.lang.reflect.RecordComponent;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -38,21 +45,56 @@ public class UpdatePacketHelper {
                     return 4 + bytes.length;
                 }
         );
+        registerSerializer(ItemStack.class,
+            (buffer, itemStack) -> {
+                if (itemStack == null) {
+                    buffer.putInt(0);
+                    return;
+                }
+                NbtCompound nbt = itemStack.writeNbt(new NbtCompound());
+                ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+                DataOutputStream dataOut = new DataOutputStream(byteOut);
+                nbt.write(dataOut);
+                buffer.putInt(byteOut.size());
+                buffer.put(byteOut.toByteArray());
+            },
+            (buffer) -> {
+                int size = buffer.getInt();
+                if (size == 0) return null;
+
+                byte[] arr = new byte[size];
+                buffer.get(arr);
+
+                ByteArrayInputStream byteIn = new ByteArrayInputStream(arr);
+                DataInputStream dataIn = new DataInputStream(byteIn);
+                NbtCompound nbt = new NbtCompound();
+                nbt.read(dataIn);
+                return new ItemStack(nbt);
+            },
+            (value) -> {
+                if (value == null) return 4;
+
+                NbtCompound nbt = value.writeNbt(new NbtCompound());
+                ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+                DataOutputStream dataOut = new DataOutputStream(byteOut);
+                nbt.write(dataOut);
+
+                return byteOut.size() + 4;
+            });
     }
 
     public static <T> void registerSerializer(Class<T> type, BiConsumer<ByteBuffer, T> serializer, Function<ByteBuffer, T> deserializer, Function<T, Integer> sizeFunc) {
         SERIALIZERS.put(type, new Serializer<T>(serializer, deserializer, sizeFunc));
     }
 
-    public static void autoSerialize(ByteBuffer buffer, Object value) throws RuntimeException {
-        Class<?> type = value.getClass();
+    public static void autoSerialize(ByteBuffer buffer, Class<?> type, Object value) throws RuntimeException {
         if (type.isPrimitive()) {
-            type = Primitives.unwrap(type);
+            type = Primitives.wrap(type);
         }
 
         if (SERIALIZERS.containsKey(type)) {
             @SuppressWarnings("rawtypes")
-            Serializer serializer = SERIALIZERS.get(value.getClass());
+            Serializer serializer = SERIALIZERS.get(type);
             //noinspection unchecked
             serializer.serialize(buffer, value);
         } else {
@@ -66,7 +108,10 @@ public class UpdatePacketHelper {
         try {
             for (RecordComponent component : components) {
                 Object value = component.getAccessor().invoke(data);
-                Class<?> type = value.getClass();
+                Class<?> type = component.getType();
+                if (type.isPrimitive()) {
+                    type = Primitives.wrap(type);
+                }
                 if (SERIALIZERS.containsKey(type)) {
                     @SuppressWarnings("rawtypes")
                     Serializer serializer = SERIALIZERS.get(type);
@@ -83,7 +128,7 @@ public class UpdatePacketHelper {
         ByteBuffer buffer = ByteBuffer.allocate(size);
         try {
             for (RecordComponent component : components) {
-                autoSerialize(buffer, component.getAccessor().invoke(data));
+                autoSerialize(buffer, component.getType(), component.getAccessor().invoke(data));
             }
         } catch (Exception e) {
             throw new RuntimeException("Couldn't serialize record.", e);

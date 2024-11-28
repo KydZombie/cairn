@@ -44,7 +44,7 @@ public abstract class ClientWorldMixin extends World {
                             for (Method method : clazz.getDeclaredMethods()) {
                                 if (method.isAnnotationPresent(PacketDeserializer.class)) {
                                     method.setAccessible(true);
-                                    Record data = (Record) method.invoke(null, packet.rawData);
+                                    Record data = (Record) method.invoke(null, (Object) packet.rawData);
 
                                     try {
                                         //noinspection unchecked

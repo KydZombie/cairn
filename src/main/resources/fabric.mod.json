@@ -31,6 +31,7 @@
   "mixins": [
     "cairn.mixins.json"
   ],
+  "accessWidener": "cairn.accessWidener",
 
   "depends": {
     "minecraft": "1.0.0-beta.7.3"
