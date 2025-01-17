@@ -55,8 +55,8 @@ public class ItemStorage {
         return 64;
     }
 
-    public void readNbt(NbtCompound nbt) {
-        NbtList inventoryList = nbt.getList("items");
+    public void readNbt(NbtCompound nbt, String key) {
+        NbtList inventoryList = nbt.getList(key);
         inventory = new ItemStack[size()];
 
         for (int var3 = 0; var3 < inventoryList.size(); ++var3) {
@@ -68,7 +68,7 @@ public class ItemStorage {
         }
     }
 
-    public void writeNbt(NbtCompound nbt) {
+    public void writeNbt(NbtCompound nbt, String key) {
         NbtList inventoryList = new NbtList();
 
         for (int slot = 0; slot < inventory.length; ++slot) {
@@ -80,7 +80,7 @@ public class ItemStorage {
             }
         }
 
-        nbt.put("items", inventoryList);
+        nbt.put(key, inventoryList);
     }
 
     /**

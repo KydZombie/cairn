@@ -1,8 +1,8 @@
 package io.github.kydzombie.cairn.impl.mixin;
 
+import io.github.kydzombie.cairn.api.block.entity.SaveToNbt;
 import io.github.kydzombie.cairn.api.block.entity.UpdatePacketReceiver;
 import io.github.kydzombie.cairn.api.packet.BlockEntityUpdatePacket;
-import io.github.kydzombie.cairn.api.storage.AutoNbt;
 import io.github.kydzombie.cairn.api.storage.HasItemStorage;
 import io.github.kydzombie.cairn.api.storage.ItemStorage;
 import net.fabricmc.api.EnvType;
@@ -34,12 +34,16 @@ public class BlockEntityMixin {
         Class<?> clazz = getClass();
         while (clazz != null) {
             for (Field field : clazz.getDeclaredFields()) {
-                if (field.isAnnotationPresent(AutoNbt.class)) {
+                var annotation = field.getAnnotation(SaveToNbt.class);
+                if (annotation != null) {
                     try {
                         field.setAccessible(true);
                         Object value = field.get(this);
                         if (value instanceof ItemStorage) {
-                            ((ItemStorage) value).readNbt(nbt);
+                            ((ItemStorage) value).readNbt(nbt, annotation.value());
+                        } else if (value instanceof Integer) {
+                            field.setAccessible(true);
+                            field.set(this, nbt.getInt(annotation.value()));
                         }
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);
@@ -56,12 +60,16 @@ public class BlockEntityMixin {
         Class<?> clazz = getClass();
         while (clazz != null) {
             for (Field field : clazz.getDeclaredFields()) {
-                if (field.isAnnotationPresent(AutoNbt.class)) {
+                var annotation = field.getAnnotation(SaveToNbt.class);
+                if (annotation != null) {
                     try {
                         field.setAccessible(true);
                         Object value = field.get(this);
                         if (value instanceof ItemStorage) {
-                            ((ItemStorage) value).writeNbt(nbt);
+                            ((ItemStorage) value).writeNbt(nbt, annotation.value());
+                        } else if (value instanceof Integer) {
+                            field.setAccessible(true);
+                            nbt.putInt(annotation.value(), (int) field.get(this));
                         }
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);

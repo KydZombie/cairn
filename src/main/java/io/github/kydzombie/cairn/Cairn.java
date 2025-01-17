@@ -5,7 +5,8 @@ import net.fabricmc.api.ModInitializer;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.modificationstation.stationapi.api.event.network.packet.PacketRegisterEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
-import net.modificationstation.stationapi.api.network.packet.IdentifiablePacket;
+import net.modificationstation.stationapi.api.registry.PacketTypeRegistry;
+import net.modificationstation.stationapi.api.registry.Registry;
 import net.modificationstation.stationapi.api.util.Namespace;
 import net.modificationstation.stationapi.api.util.Null;
 import org.apache.logging.log4j.Logger;
@@ -23,6 +24,6 @@ public class Cairn implements ModInitializer {
 
     @EventListener
     private void registerPackets(PacketRegisterEvent event) {
-        IdentifiablePacket.register(Cairn.NAMESPACE.id("block_entity_update"), true, false, BlockEntityUpdatePacket::new);
+        Registry.register(PacketTypeRegistry.INSTANCE, Cairn.NAMESPACE.id("block_entity_update"), BlockEntityUpdatePacket.TYPE);
     }
 }

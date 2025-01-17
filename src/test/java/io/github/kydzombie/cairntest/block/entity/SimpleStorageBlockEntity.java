@@ -1,22 +1,24 @@
 package io.github.kydzombie.cairntest.block.entity;
 
+import io.github.kydzombie.cairn.api.block.entity.SaveToNbt;
 import io.github.kydzombie.cairn.api.gui.SyncField;
 import io.github.kydzombie.cairn.api.gui.SyncGetter;
 import io.github.kydzombie.cairn.api.gui.SyncSetter;
-import io.github.kydzombie.cairn.api.storage.AutoNbt;
 import io.github.kydzombie.cairn.api.storage.HasItemStorage;
 import io.github.kydzombie.cairn.api.storage.ItemStorage;
 import lombok.Getter;
 import net.minecraft.block.entity.BlockEntity;
 
 public class SimpleStorageBlockEntity extends BlockEntity implements HasItemStorage {
-    @AutoNbt
+    @SaveToNbt("item_storage")
     @Getter
     private final ItemStorage itemStorage = new ItemStorage(1);
 
+    @SaveToNbt("progress")
     @SyncField("progress")
     public int progress = 0;
 
+    @SaveToNbt("private_progress")
     private int privateProgress = 0;
 
     @SyncGetter("privateProgress")
@@ -32,6 +34,7 @@ public class SimpleStorageBlockEntity extends BlockEntity implements HasItemStor
     @Override
     public void tick() {
         super.tick();
+        if (world.isRemote) return;
         progress++;
         privateProgress += 2;
     }

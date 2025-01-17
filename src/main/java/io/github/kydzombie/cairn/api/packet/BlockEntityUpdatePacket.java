@@ -5,7 +5,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.network.NetworkHandler;
 import net.minecraft.network.packet.Packet;
-import net.modificationstation.stationapi.api.network.packet.IdentifiablePacket;
+import net.modificationstation.stationapi.api.network.packet.ManagedPacket;
+import net.modificationstation.stationapi.api.network.packet.PacketType;
 import net.modificationstation.stationapi.api.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,13 +18,15 @@ import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public final class BlockEntityUpdatePacket<CustomData extends Record> extends Packet implements IdentifiablePacket {
+public final class BlockEntityUpdatePacket<CustomData extends Record> extends Packet implements ManagedPacket<BlockEntityUpdatePacket<?>> {
+    public static final PacketType<BlockEntityUpdatePacket<?>> TYPE = PacketType.builder(true, false, BlockEntityUpdatePacket::new).build();
+
     public static Queue<@NotNull BlockEntityUpdatePacket<?>> pending = new LinkedList<>();
     public int x;
     public int y;
     public int z;
     public byte[] rawData;
-    private Record data;
+    private CustomData data;
     private int dataSize;
 
     public BlockEntityUpdatePacket() {
@@ -111,7 +114,7 @@ public final class BlockEntityUpdatePacket<CustomData extends Record> extends Pa
     }
 
     @Override
-    public Identifier getId() {
-        return Cairn.NAMESPACE.id("block_entity_update");
+    public @NotNull PacketType<BlockEntityUpdatePacket<?>> getType() {
+        return TYPE;
     }
 }

@@ -195,6 +195,7 @@ public class ScreenHandlerMixin {
     @Environment(EnvType.CLIENT)
     @Inject(method = "setProperty(II)V", at = @At("HEAD"))
     private void cairn_setSyncedData(int id, int value, CallbackInfo ci) {
+        System.out.println("Setting " + id + " to " + value);
         PropertyInfo propertyInfo = cairn_getPropertyInfo();
         if (propertyInfo == null) return;
 
