@@ -36,14 +36,18 @@ public class BlockEntityMixin {
             for (Field field : clazz.getDeclaredFields()) {
                 var annotation = field.getAnnotation(SaveToNbt.class);
                 if (annotation != null) {
+                    String key = annotation.value();
+                    if (key.isEmpty()) {
+                        key = field.getName();
+                    }
                     try {
                         field.setAccessible(true);
                         Object value = field.get(this);
                         if (value instanceof ItemStorage) {
-                            ((ItemStorage) value).readNbt(nbt, annotation.value());
+                            ((ItemStorage) value).readNbt(nbt, key);
                         } else if (value instanceof Integer) {
                             field.setAccessible(true);
-                            field.set(this, nbt.getInt(annotation.value()));
+                            field.set(this, nbt.getInt(key));
                         }
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);
@@ -62,14 +66,18 @@ public class BlockEntityMixin {
             for (Field field : clazz.getDeclaredFields()) {
                 var annotation = field.getAnnotation(SaveToNbt.class);
                 if (annotation != null) {
+                    String key = annotation.value();
+                    if (key.isEmpty()) {
+                        key = field.getName();
+                    }
                     try {
                         field.setAccessible(true);
                         Object value = field.get(this);
                         if (value instanceof ItemStorage) {
-                            ((ItemStorage) value).writeNbt(nbt, annotation.value());
+                            ((ItemStorage) value).writeNbt(nbt, key);
                         } else if (value instanceof Integer) {
                             field.setAccessible(true);
-                            nbt.putInt(annotation.value(), (int) field.get(this));
+                            nbt.putInt(key, (int) field.get(this));
                         }
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);

@@ -10,15 +10,15 @@ import lombok.Getter;
 import net.minecraft.block.entity.BlockEntity;
 
 public class SimpleStorageBlockEntity extends BlockEntity implements HasItemStorage {
-    @SaveToNbt("item_storage")
+    @SaveToNbt
     @Getter
     private final ItemStorage itemStorage = new ItemStorage(1);
 
-    @SaveToNbt("progress")
-    @SyncField("progress")
+    @SaveToNbt
+    @SyncField
     public int progress = 0;
 
-    @SaveToNbt("private_progress")
+    @SaveToNbt
     private int privateProgress = 0;
 
     @SyncGetter("privateProgress")

@@ -69,6 +69,9 @@ public class ScreenHandlerMixin {
                 }
 
                 String propertyName = field.getAnnotation(SyncField.class).value();
+                if (propertyName.isEmpty()) {
+                    propertyName = field.getName();
+                }
                 if (fields.containsKey(propertyName)) {
                     if (fields.get(propertyName).getDeclaringClass() == field.getDeclaringClass()) {
                         throw new RuntimeException("Cannot have more than one field for a property");
@@ -77,7 +80,7 @@ public class ScreenHandlerMixin {
                 }
 
                 field.setAccessible(true);
-                fields.put(field.getAnnotation(SyncField.class).value(), field);
+                fields.put(propertyName, field);
             }
 
             for (Method method : clazz.getDeclaredMethods()) {
