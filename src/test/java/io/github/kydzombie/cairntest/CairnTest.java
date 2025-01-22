@@ -1,8 +1,10 @@
 package io.github.kydzombie.cairntest;
 
 import io.github.kydzombie.cairn.api.recipe.CustomCraftingRecipeManager;
+import io.github.kydzombie.cairntest.block.RenderTestBlock;
 import io.github.kydzombie.cairntest.block.SimpleStorageBlock;
 import io.github.kydzombie.cairntest.block.UpdatePacketTesterBlock;
+import io.github.kydzombie.cairntest.block.entity.RenderTestBlockEntity;
 import io.github.kydzombie.cairntest.block.entity.SimpleStorageBlockEntity;
 import io.github.kydzombie.cairntest.block.entity.UpdatePacketTesterBlockEntity;
 import io.github.kydzombie.cairntest.item.GlassSword;
@@ -35,17 +37,20 @@ public class CairnTest implements ModInitializer {
 
     public static SimpleStorageBlock simpleStorageBlock;
     public static UpdatePacketTesterBlock updatePacketTesterBlock;
+    public static RenderTestBlock renderTestBlock;
 
     @EventListener
     private void registerBlocks(BlockRegistryEvent event) {
         simpleStorageBlock = new SimpleStorageBlock(NAMESPACE.id("simple_storage_block"), Material.STONE);
         updatePacketTesterBlock = new UpdatePacketTesterBlock(NAMESPACE.id("update_packet_tester_block"), Material.STONE);
+        renderTestBlock = new RenderTestBlock(NAMESPACE.id("render_test_block"), Material.STONE);
     }
 
     @EventListener
     private void registerBlockEntities(BlockEntityRegisterEvent event) {
         event.register(SimpleStorageBlockEntity.class, NAMESPACE.id("simple_storage_block").toString());
         event.register(UpdatePacketTesterBlockEntity.class, NAMESPACE.id("update_packet_tester_block").toString());
+        event.register(RenderTestBlockEntity.class, NAMESPACE.id("render_test_block").toString());
     }
 
     public static GlassSword glassSword;

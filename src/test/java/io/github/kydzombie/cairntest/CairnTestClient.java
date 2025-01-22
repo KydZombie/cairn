@@ -1,9 +1,12 @@
 package io.github.kydzombie.cairntest;
 
+import io.github.kydzombie.cairntest.block.entity.RenderTestBlockEntity;
 import io.github.kydzombie.cairntest.block.entity.SimpleStorageBlockEntity;
+import io.github.kydzombie.cairntest.client.RenderTestBlockEntityRenderer;
 import io.github.kydzombie.cairntest.gui.ingame.SimpleStorageScreen;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.item.Item;
+import net.modificationstation.stationapi.api.client.event.block.entity.BlockEntityRendererRegisterEvent;
 import net.modificationstation.stationapi.api.client.event.texture.TextureRegisterEvent;
 import net.modificationstation.stationapi.api.client.gui.screen.GuiHandler;
 import net.modificationstation.stationapi.api.event.registry.GuiHandlerRegistryEvent;
@@ -26,5 +29,10 @@ public class CairnTestClient {
                         SimpleStorageBlockEntity::new
                 )
         );
+    }
+
+    @EventListener
+    private void registerBlockEntityRenderers(BlockEntityRendererRegisterEvent event) {
+        event.renderers.put(RenderTestBlockEntity.class, new RenderTestBlockEntityRenderer());
     }
 }
