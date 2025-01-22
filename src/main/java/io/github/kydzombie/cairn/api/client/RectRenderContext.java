@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 public class RectRenderContext {
     private Vec3d pos = null;
-    private double size = 1;
+    private double width = 1, height = 1, depth = 1;
     private Vec3d rotation = null;
     private Color color = Color.WHITE;
     private int glSFactor = GL11.GL_SRC_ALPHA;
@@ -34,8 +34,17 @@ public class RectRenderContext {
         return this;
     }
 
+    public RectRenderContext withSize(double width, double height, double depth) {
+        this.width = width;
+        this.height = height;
+        this.depth = depth;
+        return this;
+    }
+
     public RectRenderContext withSize(double size) {
-        this.size = size;
+        this.width = size;
+        this.height = size;
+        this.depth = size;
         return this;
     }
 
@@ -83,7 +92,7 @@ public class RectRenderContext {
             GL11.glRotated(rotation.z, 0, 0, 1);
         }
 
-        GL11.glScaled(size, size, size);
+        GL11.glScaled(width, height, depth);
 
         if (centered) {
             GL11.glTranslated(-0.5, -0.5, -0.5);
@@ -129,7 +138,20 @@ public class RectRenderContext {
         GL11.glVertex3f(1.0f, 0.0f, 0.0f);
 
         GL11.glEnd();
-        GL11.glTranslated(-pos.x, -pos.y, -pos.z);
+        if (centered) {
+            GL11.glTranslated(0.5, 0.5, 0.5);
+        }
+        GL11.glScaled(-width, -height, -depth);
+        if (rotation != null) {
+            GL11.glRotated(-rotation.x, 1, 0, 0);
+            GL11.glRotated(-rotation.y, 0, 1, 0);
+            GL11.glRotated(-rotation.z, 0, 0, 1);
+        }
+        if (centered) {
+            GL11.glTranslated(-(pos.x + 0.5), -(pos.y + 0.5), -(pos.z + 0.5));
+        } else {
+            GL11.glTranslated(-pos.x, -pos.y, -pos.z);
+        }
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_BLEND);
