@@ -20,6 +20,8 @@ public class RenderTestBlockEntityRenderer extends BlockEntityRenderer {
         float b = (float) Math.sin((System.currentTimeMillis() / 1000.0) + 4) * 0.5f + 0.5f;
 
         RenderHelper.startRect().centeredAt(x, y, z).withColor(r, g, b, 0.8f).withRotation(0, angle, angle).withSize(scale).draw();
+
+        RenderHelper.startRect().at(x, y, z).withSize(0.2f).draw();
         GL11.glPopMatrix();
     }
 }

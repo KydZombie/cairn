@@ -71,6 +71,8 @@ public class RectRenderContext {
             Cairn.LOGGER.error("RectRenderContext: Position not set!");
         }
 
+        GL11.glPushMatrix();
+
         if (color.a() != 1 || glSFactor != GL11.GL_SRC_ALPHA || glDFactor != GL11.GL_ONE_MINUS_SRC_ALPHA) {
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(glSFactor, glDFactor);
@@ -138,22 +140,10 @@ public class RectRenderContext {
         GL11.glVertex3f(1.0f, 0.0f, 0.0f);
 
         GL11.glEnd();
-        if (centered) {
-            GL11.glTranslated(0.5, 0.5, 0.5);
-        }
-        GL11.glScaled(-width, -height, -depth);
-        if (rotation != null) {
-            GL11.glRotated(-rotation.x, 1, 0, 0);
-            GL11.glRotated(-rotation.y, 0, 1, 0);
-            GL11.glRotated(-rotation.z, 0, 0, 1);
-        }
-        if (centered) {
-            GL11.glTranslated(-(pos.x + 0.5), -(pos.y + 0.5), -(pos.z + 0.5));
-        } else {
-            GL11.glTranslated(-pos.x, -pos.y, -pos.z);
-        }
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_BLEND);
+
+        GL11.glPopMatrix();
     }
 }
