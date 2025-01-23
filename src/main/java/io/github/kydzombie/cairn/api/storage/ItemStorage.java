@@ -1,11 +1,12 @@
 package io.github.kydzombie.cairn.api.storage;
 
+import io.github.kydzombie.cairn.api.block.entity.NbtSerializable;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 
-public class ItemStorage {
+public class ItemStorage implements NbtSerializable<NbtList> {
     ItemStack[] inventory;
 
     public ItemStorage(int size) {
@@ -55,32 +56,33 @@ public class ItemStorage {
         return 64;
     }
 
-    public void readNbt(NbtCompound nbt, String key) {
-        NbtList inventoryList = nbt.getList(key);
-        inventory = new ItemStack[size()];
-
-        for (int var3 = 0; var3 < inventoryList.size(); ++var3) {
-            NbtCompound itemNbt = (NbtCompound) inventoryList.get(var3);
-            byte slot = itemNbt.getByte("slot");
-            if (slot >= 0 && slot < inventory.length) {
-                inventory[slot] = new ItemStack(itemNbt);
-            }
-        }
-    }
-
-    public void writeNbt(NbtCompound nbt, String key) {
-        NbtList inventoryList = new NbtList();
+    @Override
+    public NbtList writeNbt() {
+        NbtList nbt = new NbtList();
 
         for (int slot = 0; slot < inventory.length; ++slot) {
             if (inventory[slot] != null) {
                 NbtCompound itemNbt = new NbtCompound();
                 itemNbt.putByte("slot", (byte) slot);
                 inventory[slot].writeNbt(itemNbt);
-                inventoryList.add(itemNbt);
+                nbt.add(itemNbt);
             }
         }
 
-        nbt.put(key, inventoryList);
+        return nbt;
+    }
+
+    @Override
+    public void readNbt(NbtList nbt) {
+        inventory = new ItemStack[size()];
+
+        for (int var3 = 0; var3 < nbt.size(); ++var3) {
+            NbtCompound itemNbt = (NbtCompound) nbt.get(var3);
+            byte slot = itemNbt.getByte("slot");
+            if (slot >= 0 && slot < inventory.length) {
+                inventory[slot] = new ItemStack(itemNbt);
+            }
+        }
     }
 
     /**
