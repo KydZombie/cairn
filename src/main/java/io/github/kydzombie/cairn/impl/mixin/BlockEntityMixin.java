@@ -84,6 +84,9 @@ public abstract class BlockEntityMixin {
                         } else if (value instanceof long[]) {
                             field.setAccessible(true);
                             field.set(this, nbt.getLongArray(key));
+                        } else if (field.getType().isEnum()) {
+                            field.setAccessible(true);
+                            field.set(this, Enum.valueOf((Class<Enum>) field.getType(), nbt.getString(key)));
                         } else {
                             throw new RuntimeException("Unsupported type for @SaveToNbt: " + value.getClass() + ", consider implementing NbtSerializable");
                         }
@@ -146,9 +149,9 @@ public abstract class BlockEntityMixin {
                         } else if (value instanceof long[]) {
                             field.setAccessible(true);
                             nbt.put(key, (long[]) field.get(this));
-                        } else if (value instanceof NbtElement) {
+                        } else if (field.getType().isEnum()) {
                             field.setAccessible(true);
-                            nbt.put(key, (NbtElement) field.get(this));
+                            nbt.putString(key, ((Enum<?>) value).name());
                         } else {
                             throw new RuntimeException("Unsupported type for @SaveToNbt: " + value.getClass() + ", consider implementing NbtSerializable");
                         }
