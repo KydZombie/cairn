@@ -1,6 +1,8 @@
 package io.github.kydzombie.cairntest.client;
 
+import io.github.kydzombie.cairn.api.client.RectRenderContext;
 import io.github.kydzombie.cairn.api.client.RenderHelper;
+import io.github.kydzombie.cairntest.block.entity.RenderTestBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import org.lwjgl.opengl.GL11;
@@ -21,7 +23,21 @@ public class RenderTestBlockEntityRenderer extends BlockEntityRenderer {
 
         RenderHelper.startRect().centeredAt(x, y, z).withColor(r, g, b, 0.8f).withRotation(0, angle, angle).withSize(scale).draw();
 
-        RenderHelper.startRect().at(x, y, z).withSize(0.2f).draw();
+        RenderTestBlockEntity.MyColor color = ((RenderTestBlockEntity) blockEntity).myColor;
+
+        RectRenderContext rect = RenderHelper.startRect().at(x, y, z).withSize(0.2f);
+        switch (color) {
+            case RED:
+                rect.withColor(1, 0, 0, 1);
+                break;
+            case GREEN:
+                rect.withColor(0, 1, 0, 1);
+                break;
+            case BLUE:
+                rect.withColor(0, 0, 1, 1);
+                break;
+        }
+        rect.draw();
         GL11.glPopMatrix();
     }
 }

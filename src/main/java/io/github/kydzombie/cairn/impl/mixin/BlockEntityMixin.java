@@ -33,7 +33,6 @@ public abstract class BlockEntityMixin {
 
     @Inject(method = "readNbt", at = @At("RETURN"))
     private void cairn_injectReadNbt(NbtCompound nbt, CallbackInfo ci) {
-        if (!(this instanceof HasItemStorage)) return;
         Class<?> clazz = getClass();
         while (clazz != null) {
             for (Field field : clazz.getDeclaredFields()) {
@@ -52,40 +51,28 @@ public abstract class BlockEntityMixin {
                                 nbtSerializable.readNbt(nbtElement);
                             }
                         } else if (value instanceof Integer) {
-                            field.setAccessible(true);
                             field.set(this, nbt.getInt(key));
                         } else if (value instanceof Boolean) {
-                            field.setAccessible(true);
                             field.set(this, nbt.getBoolean(key));
                         } else if (value instanceof String) {
-                            field.setAccessible(true);
                             field.set(this, nbt.getString(key));
                         } else if (value instanceof Long) {
-                            field.setAccessible(true);
                             field.set(this, nbt.getLong(key));
                         } else if (value instanceof Float) {
-                            field.setAccessible(true);
                             field.set(this, nbt.getFloat(key));
                         } else if (value instanceof Double) {
-                            field.setAccessible(true);
                             field.set(this, nbt.getDouble(key));
                         } else if (value instanceof Byte) {
-                            field.setAccessible(true);
                             field.set(this, nbt.getByte(key));
                         } else if (value instanceof Short) {
-                            field.setAccessible(true);
                             field.set(this, nbt.getShort(key));
                         } else if (value instanceof byte[]) {
-                            field.setAccessible(true);
                             field.set(this, nbt.getByteArray(key));
                         } else if (value instanceof int[]) {
-                            field.setAccessible(true);
                             field.set(this, nbt.getIntArray(key));
                         } else if (value instanceof long[]) {
-                            field.setAccessible(true);
                             field.set(this, nbt.getLongArray(key));
                         } else if (field.getType().isEnum()) {
-                            field.setAccessible(true);
                             field.set(this, Enum.valueOf((Class<Enum>) field.getType(), nbt.getString(key)));
                         } else {
                             throw new RuntimeException("Unsupported type for @SaveToNbt: " + value.getClass() + ", consider implementing NbtSerializable");
@@ -101,7 +88,6 @@ public abstract class BlockEntityMixin {
 
     @Inject(method = "writeNbt", at = @At("RETURN"))
     private void cairn_injectWriteNbt(NbtCompound nbt, CallbackInfo ci) {
-        if (!(this instanceof HasItemStorage)) return;
         Class<?> clazz = getClass();
         while (clazz != null) {
             for (Field field : clazz.getDeclaredFields()) {
@@ -117,40 +103,28 @@ public abstract class BlockEntityMixin {
                         if (value instanceof NbtSerializable nbtSerializable) {
                             nbt.put(key, nbtSerializable.writeNbt());
                         } else if (value instanceof Integer) {
-                            field.setAccessible(true);
                             nbt.putInt(key, (int) field.get(this));
                         } else if (value instanceof Boolean) {
-                            field.setAccessible(true);
                             nbt.putBoolean(key, (boolean) field.get(this));
                         } else if (value instanceof String) {
-                            field.setAccessible(true);
                             nbt.putString(key, (String) field.get(this));
                         } else if (value instanceof Long) {
-                            field.setAccessible(true);
                             nbt.putLong(key, (long) field.get(this));
                         } else if (value instanceof Float) {
-                            field.setAccessible(true);
                             nbt.putFloat(key, (float) field.get(this));
                         } else if (value instanceof Double) {
-                            field.setAccessible(true);
                             nbt.putDouble(key, (double) field.get(this));
                         } else if (value instanceof Byte) {
-                            field.setAccessible(true);
                             nbt.putByte(key, (byte) field.get(this));
                         } else if (value instanceof Short) {
-                            field.setAccessible(true);
                             nbt.putShort(key, (short) field.get(this));
                         } else if (value instanceof byte[]) {
-                            field.setAccessible(true);
                             nbt.putByteArray(key, (byte[]) field.get(this));
                         } else if (value instanceof int[]) {
-                            field.setAccessible(true);
                             nbt.put(key, (int[]) field.get(this));
                         } else if (value instanceof long[]) {
-                            field.setAccessible(true);
                             nbt.put(key, (long[]) field.get(this));
                         } else if (field.getType().isEnum()) {
-                            field.setAccessible(true);
                             nbt.putString(key, ((Enum<?>) value).name());
                         } else {
                             throw new RuntimeException("Unsupported type for @SaveToNbt: " + value.getClass() + ", consider implementing NbtSerializable");
