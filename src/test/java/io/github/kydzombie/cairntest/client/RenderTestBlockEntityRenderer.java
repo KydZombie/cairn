@@ -5,11 +5,14 @@ import io.github.kydzombie.cairn.api.client.RenderHelper;
 import io.github.kydzombie.cairntest.block.entity.RenderTestBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
 public class RenderTestBlockEntityRenderer extends BlockEntityRenderer {
     @Override
     public void render(BlockEntity blockEntity, double x, double y, double z, float tickDelta) {
+        RenderTestBlockEntity entity = (RenderTestBlockEntity) blockEntity;
         GL11.glPushMatrix();
 
         long time = System.currentTimeMillis();
@@ -23,7 +26,7 @@ public class RenderTestBlockEntityRenderer extends BlockEntityRenderer {
 
         RenderHelper.startRect().centeredAt(x, y, z).withColor(r, g, b, 0.8f).withRotation(0, angle, angle).withSize(scale).draw();
 
-        RenderTestBlockEntity.MyColor color = ((RenderTestBlockEntity) blockEntity).myColor;
+        RenderTestBlockEntity.MyColor color = entity.myColor;
 
         RectRenderContext rect = RenderHelper.startRect().at(x, y, z).withSize(0.2f);
         switch (color) {
@@ -38,6 +41,8 @@ public class RenderTestBlockEntityRenderer extends BlockEntityRenderer {
                 break;
         }
         rect.draw();
+
+        RenderHelper.startItem(entity.itemStack).at(x + 0.5, y + 1.5, z + 0.5).withRotation(angle, angle, angle).withScale(scale * 2).draw();
         GL11.glPopMatrix();
     }
 }

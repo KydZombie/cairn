@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+        "model": "cairntest:block/test_block"
+    }
+  }
+}

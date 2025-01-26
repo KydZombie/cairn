@@ -3,3 +3,6 @@ accessible method net/minecraft/nbt/NbtCompound write (Ljava/io/DataOutput;)V
 accessible method net/minecraft/nbt/NbtCompound read (Ljava/io/DataInput;)V
 
 accessible field net/minecraft/nbt/NbtCompound entries Ljava/util/Map;
+
+accessible field net/minecraft/client/render/WorldRenderer blockRenderManager Lnet/minecraft/client/render/block/BlockRenderManager;
+accessible class net/minecraft/client/render/item/ItemRenderer

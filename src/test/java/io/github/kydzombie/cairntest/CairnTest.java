@@ -10,6 +10,7 @@ import io.github.kydzombie.cairntest.block.entity.UpdatePacketTesterBlockEntity;
 import io.github.kydzombie.cairntest.item.GlassSword;
 import net.fabricmc.api.ModInitializer;
 import net.mine_diver.unsafeevents.listener.EventListener;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,6 +21,8 @@ import net.modificationstation.stationapi.api.event.registry.BlockRegistryEvent;
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
 import net.modificationstation.stationapi.api.item.tool.ToolMaterialFactory;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
+import net.modificationstation.stationapi.api.template.block.TemplateBlock;
+import net.modificationstation.stationapi.api.template.item.TemplateItem;
 import net.modificationstation.stationapi.api.util.Namespace;
 import net.modificationstation.stationapi.api.util.Null;
 import org.apache.logging.log4j.Logger;
@@ -38,12 +41,14 @@ public class CairnTest implements ModInitializer {
     public static SimpleStorageBlock simpleStorageBlock;
     public static UpdatePacketTesterBlock updatePacketTesterBlock;
     public static RenderTestBlock renderTestBlock;
+    public static Block testBlock;
 
     @EventListener
     private void registerBlocks(BlockRegistryEvent event) {
         simpleStorageBlock = new SimpleStorageBlock(NAMESPACE.id("simple_storage_block"), Material.STONE);
         updatePacketTesterBlock = new UpdatePacketTesterBlock(NAMESPACE.id("update_packet_tester_block"), Material.STONE);
         renderTestBlock = new RenderTestBlock(NAMESPACE.id("render_test_block"), Material.STONE);
+        testBlock = new TemplateBlock(NAMESPACE.id("test_block"), Material.STONE).setTranslationKey(NAMESPACE.id("test_block"));
     }
 
     @EventListener
@@ -54,6 +59,7 @@ public class CairnTest implements ModInitializer {
     }
 
     public static GlassSword glassSword;
+    public static Item testItem;
 
     @EventListener
     private void registerItems(ItemRegistryEvent event) {
@@ -66,6 +72,8 @@ public class CairnTest implements ModInitializer {
         );
 
         glassSword = new GlassSword(NAMESPACE.id("glass_sword"), glass);
+
+        testItem = new TemplateItem(NAMESPACE.id("test_item")).setTranslationKey(NAMESPACE.id("test_item"));
     }
 
     @EventListener

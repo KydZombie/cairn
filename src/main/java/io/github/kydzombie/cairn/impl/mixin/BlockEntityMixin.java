@@ -4,10 +4,10 @@ import io.github.kydzombie.cairn.api.block.entity.NbtSerializable;
 import io.github.kydzombie.cairn.api.block.entity.SaveToNbt;
 import io.github.kydzombie.cairn.api.block.entity.UpdatePacketReceiver;
 import io.github.kydzombie.cairn.api.packet.BlockEntityUpdatePacket;
-import io.github.kydzombie.cairn.api.storage.HasItemStorage;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.packet.Packet;
@@ -49,6 +49,12 @@ public abstract class BlockEntityMixin {
                             NbtElement nbtElement = (NbtElement) nbt.entries.get(key);
                             if (nbtElement != null) {
                                 nbtSerializable.readNbt(nbtElement);
+                            }
+                        } else if (field.getType() == ItemStack.class) {
+                            if (nbt.getBoolean(key + "_null")) {
+                                field.set(this, null);
+                            } else if (nbt.contains(key)) {
+                                field.set(this, new ItemStack(nbt.getCompound(key)));
                             }
                         } else if (value instanceof Integer) {
                             field.set(this, nbt.getInt(key));
@@ -102,6 +108,13 @@ public abstract class BlockEntityMixin {
                         Object value = field.get(this);
                         if (value instanceof NbtSerializable nbtSerializable) {
                             nbt.put(key, nbtSerializable.writeNbt());
+                        } else if (field.getType() == ItemStack.class) {
+                            if (value == null) {
+                                nbt.putBoolean(key + "_null", true);
+                            } else {
+                                nbt.putBoolean(key + "_null", false);
+                                nbt.put(key, ((ItemStack) field.get(this)).writeNbt(new NbtCompound()));
+                            }
                         } else if (value instanceof Integer) {
                             nbt.putInt(key, (int) field.get(this));
                         } else if (value instanceof Boolean) {
